@@ -1,6 +1,7 @@
 package com.manamaru.manmaruyoyaku.service
 
 import com.manamaru.manmaruyoyaku.domain.FacilitySchedule
+import com.manamaru.manmaruyoyaku.entity.TrnFacilityKeyId
 import com.manamaru.manmaruyoyaku.entity.TrnFacilitySchedule
 import com.manamaru.manmaruyoyaku.repository.TrnFacilityScheduleRepository
 import org.springframework.stereotype.Service
@@ -31,7 +32,16 @@ class FacilityScheduleService(private val trnFacilityScheduleRepository: TrnFaci
             }
 
     fun saveAll(facilityScheduleList: List<FacilitySchedule>) {
-        val trnFacilitySchedule = facilityScheduleList.map{ it -> TrnFacilitySchedule()}
+        val trnFacilitySchedule = facilityScheduleList
+                .map { it ->
+                    TrnFacilitySchedule(
+                            TrnFacilityKeyId(
+                                    it.facilityId,
+                                    it.scheduleDate,
+                                    it.scheduleStartTime,
+                                    it.scheduleEndTime),
+                                    it.scheduleIsAvailable)
+                }
         trnFacilityScheduleRepository.saveAll(trnFacilitySchedule)
     }
 }
