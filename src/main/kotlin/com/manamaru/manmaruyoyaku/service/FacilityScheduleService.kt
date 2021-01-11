@@ -32,17 +32,22 @@ class FacilityScheduleService(private val trnFacilityScheduleRepository: TrnFaci
             }
 
     fun saveAll(facilityScheduleList: List<FacilitySchedule>) {
-        trnFacilityScheduleRepository.truncateTrnFacilitySchedule()
-        val trnFacilitySchedule = facilityScheduleList
-                .map { it ->
-                    TrnFacilitySchedule(
-                            TrnFacilityKeyId(
-                                    it.facilityId,
-                                    it.scheduleDate!!,
-                                    it.scheduleStartTime,
-                                    it.scheduleEndTime),
-                                    it.scheduleIsAvailable)
-                }
-        trnFacilityScheduleRepository.saveAll(trnFacilitySchedule)
+        try {
+            trnFacilityScheduleRepository.truncateTrnFacilitySchedule()
+            val trnFacilitySchedule = facilityScheduleList
+                    .map { it ->
+                        TrnFacilitySchedule(
+                                TrnFacilityKeyId(
+                                        it.facilityId,
+                                        it.scheduleDate!!,
+                                        it.scheduleStartTime,
+                                        it.scheduleEndTime),
+                                it.scheduleIsAvailable)
+                    }
+            trnFacilityScheduleRepository.saveAll(trnFacilitySchedule)
+        } catch (e: Exception) {
+            throw e
+        }
+
     }
 }

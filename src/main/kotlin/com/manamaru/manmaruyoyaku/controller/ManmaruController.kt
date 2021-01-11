@@ -4,10 +4,9 @@ import com.manamaru.manmaruyoyaku.domain.Facility
 import com.manamaru.manmaruyoyaku.domain.FacilitySchedule
 import com.manamaru.manmaruyoyaku.service.FacilityScheduleService
 import com.manamaru.manmaruyoyaku.service.FacilityService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class ManmaruController(private val facilityService: FacilityService, private val facilityScheduleService: FacilityScheduleService) {
@@ -23,7 +22,9 @@ class ManmaruController(private val facilityService: FacilityService, private va
     }
 
     @PostMapping("schedules")
-    fun createSchedules(@RequestBody facilityScheduleList: List<FacilitySchedule>) {
-        return facilityScheduleService.saveAll(facilityScheduleList)
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createSchedules(@RequestBody facilityScheduleList: List<FacilitySchedule>):ResponseEntity<String> {
+        facilityScheduleService.saveAll(facilityScheduleList)
+        return ResponseEntity.ok("success")
     }
 }
