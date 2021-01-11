@@ -22,8 +22,8 @@ class ManmaruController(private val facilityService: FacilityService, private va
         return facilityScheduleService.findAll()
     }
 
-    @PostMapping("/schedule")
-    fun createUserById(@RequestBody facilityScheduleList: List<FacilitySchedule>) {
+    @PostMapping("schedules")
+    fun createSchedules(@RequestBody facilityScheduleList: List<FacilitySchedule>) {
         return facilityScheduleService.saveAll(facilityScheduleList)
     }
 }

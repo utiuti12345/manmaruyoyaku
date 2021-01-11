@@ -5,10 +5,10 @@ class Facility {
     val facilityName:String
     val facilityAreaName:String
     val facilityDisplayName:String
-    constructor(_facilityId:Int,_facilityName:String,_facilityAreaName:String,_facilityDisplayName:String){
-        this.facilityId = _facilityId
-        this.facilityName = _facilityName
-        this.facilityAreaName = _facilityAreaName
-        this.facilityDisplayName = _facilityDisplayName
+    constructor(facilityId:Int,facilityName:String,facilityAreaName:String,facilityDisplayName:String){
+        this.facilityId = facilityId
+        this.facilityName = facilityName
+        this.facilityAreaName = facilityAreaName
+        this.facilityDisplayName = facilityDisplayName
     }
 }

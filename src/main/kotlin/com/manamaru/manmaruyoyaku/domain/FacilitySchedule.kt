@@ -5,16 +5,16 @@ import java.util.*
 
 class FacilitySchedule{
     val facilityId: Int
-    val scheduleDate: Date
+    val scheduleDate: Date?
     val scheduleStartTime: String
     val scheduleEndTime: String
     val scheduleIsAvailable:Boolean
-    constructor(_facilityId:Int,_scheduleDate:Date,_scheduleStartTime:String,_scheduleEndTime:String,_scheduleIsAvailable:Boolean){
-        this.facilityId = _facilityId
-        this.scheduleDate = _scheduleDate
-        this.scheduleStartTime = _scheduleStartTime
-        this.scheduleEndTime = _scheduleEndTime
-        this.scheduleIsAvailable = _scheduleIsAvailable
+    constructor(facilityId:Int,scheduleDate:Date,scheduleStartTime:String,scheduleEndTime:String,scheduleIsAvailable:Boolean){
+        this.facilityId = facilityId
+        this.scheduleDate = scheduleDate
+        this.scheduleStartTime = scheduleStartTime
+        this.scheduleEndTime = scheduleEndTime
+        this.scheduleIsAvailable = scheduleIsAvailable
     }
 
     fun formatDatetimeText(): String {
