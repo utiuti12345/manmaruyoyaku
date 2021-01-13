@@ -9,7 +9,12 @@ class FacilitySchedule{
     val scheduleStartTime: String
     val scheduleEndTime: String
     val scheduleIsAvailable:Boolean
-    constructor(facilityId:Int,scheduleDate:Date,scheduleStartTime:String,scheduleEndTime:String,scheduleIsAvailable:Boolean){
+    val calendar: Calendar = Calendar.getInstance()
+
+    var weekName = arrayOf("日", "月", "火",
+            "水", "木", "金", "土")
+
+    constructor(facilityId: Int, scheduleDate: Date, scheduleStartTime: String, scheduleEndTime: String, scheduleIsAvailable: Boolean){
         this.facilityId = facilityId
         this.scheduleDate = scheduleDate
         this.scheduleStartTime = scheduleStartTime
@@ -18,8 +23,27 @@ class FacilitySchedule{
     }
 
     fun formatDatetimeText(): String {
-        val df = SimpleDateFormat("yyyy/MM/dd")
+        val df = SimpleDateFormat("yyyy/MM/dd(E)")
         val formatDate = df.format(scheduleDate)
-        return "$formatDate $scheduleStartTime〜$scheduleEndTime"
+        val dayOfWeek = getDayOfWeek()
+        return "${formatDate} ${scheduleStartTime}〜${scheduleEndTime}"
+    }
+
+    fun formatDatetimeSort(): Date{
+        calendar.time = scheduleDate
+        calendar.add(Calendar.HOUR_OF_DAY,scheduleStartTime.replace("時","").let { it.toInt() })
+        return calendar.getTime()
+    }
+
+    fun getDayOfWeek(): String{
+        calendar.time = Date()
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        return weekName[dayOfWeek]
+    }
+
+    fun getMonthToString(): String{
+        calendar.time = scheduleDate
+        val month = (calendar.get(Calendar.MONTH)+1).toString()
+        return "${month}月";
     }
 }
