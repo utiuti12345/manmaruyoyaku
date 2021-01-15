@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: manmaru
+  name: manmaru
+spec:
+  #type: ClusterIP
+  type: LoadBalancer
+  selector:
+    app: manmaru
+  ports:
+    - name:     http
+      protocol: TCP
+      port:       5000
+      targetPort: 5000
