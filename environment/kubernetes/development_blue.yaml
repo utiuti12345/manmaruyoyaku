@@ -22,19 +22,19 @@ spec:
             - name:          http
               protocol:      TCP
               containerPort: 5000
-              env:
-                - name: SPRING_DATASOURCE_URL
-                  valueFrom:
-                    secretKeyRef:
-                      name: mysecret
-                      key: url
-                - name: SPRING_USERNAME
-                  valueFrom:
-                    secretKeyRef:
-                      name: mysecret
-                      key: username
-                - name: SPRING_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: mysecret
-                      key: password
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: url
+            - name: SPRING_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: username
+            - name: SPRING_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: password
