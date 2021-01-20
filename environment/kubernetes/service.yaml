@@ -1,15 +1,14 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   namespace: manmaru
-  name: manmaru
+  name: manmaru-svc
 spec:
-  #type: ClusterIP
-  type: LoadBalancer
+  type: ClusterIP
+  #type: LoadBalancer
+  #type: NodePort
   selector:
-    app: manmaru
+    app: manmaruyoyaku
   ports:
-    - name:     http
-      protocol: TCP
+    - protocol: TCP
       port:       5000
-      targetPort: 5000

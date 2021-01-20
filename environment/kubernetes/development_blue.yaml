@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: manmaru
-  name: manmaru
+  name: manmaruyoyaku
 spec:
   replicas: 1
   selector:
