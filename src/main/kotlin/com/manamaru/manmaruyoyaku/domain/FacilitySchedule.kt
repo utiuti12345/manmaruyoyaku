@@ -23,10 +23,13 @@ class FacilitySchedule{
     }
 
     fun formatDatetimeText(): String {
-        val df = SimpleDateFormat("yyyy/MM/dd(E)")
-        val formatDate = df.format(scheduleDate)
+        // 9時間ズレる問題が環境で解決できなかったので、9時間ズラす
+        calendar.time = scheduleDate
+        calendar.add(Calendar.HOUR_OF_DAY,9)
+        val df = SimpleDateFormat("yyyy/MM/dd")
+        val formatDate = df.format(calendar.getTime())
         val dayOfWeek = getDayOfWeek()
-        return "${formatDate} ${scheduleStartTime}〜${scheduleEndTime}"
+        return "${formatDate}(${dayOfWeek})${scheduleStartTime}〜${scheduleEndTime}"
     }
 
     fun formatDatetimeSort(): Date{

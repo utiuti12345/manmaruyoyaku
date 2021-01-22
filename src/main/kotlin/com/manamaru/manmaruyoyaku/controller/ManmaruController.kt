@@ -1,5 +1,11 @@
 package com.manamaru.manmaruyoyaku.controller
 
+import com.linecorp.bot.model.event.MessageEvent
+import com.linecorp.bot.model.event.message.TextMessageContent
+import com.linecorp.bot.model.message.Message
+import com.linecorp.bot.model.message.TextMessage
+import com.linecorp.bot.spring.boot.annotation.EventMapping
+import com.linecorp.bot.spring.boot.annotation.LineMessageHandler
 import com.manamaru.manmaruyoyaku.domain.Facility
 import com.manamaru.manmaruyoyaku.domain.FacilitySchedule
 import com.manamaru.manmaruyoyaku.service.FacilityScheduleService
@@ -7,14 +13,6 @@ import com.manamaru.manmaruyoyaku.service.FacilityService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import com.linecorp.bot.model.event.Event
-import com.linecorp.bot.model.event.MessageEvent
-import com.linecorp.bot.model.event.message.TextMessageContent
-import com.linecorp.bot.model.message.TextMessage
-import com.linecorp.bot.model.message.Message
-import com.linecorp.bot.spring.boot.annotation.EventMapping
-import com.linecorp.bot.spring.boot.annotation.LineMessageHandler
-import java.text.SimpleDateFormat
 import java.util.*
 
 @RestController
@@ -31,11 +29,11 @@ class ManmaruController(private val facilityService: FacilityService, private va
         return facilityScheduleService.findAll()
     }
 
-    @PostMapping("schedules")
+    @PostMapping("schedules",produces = ["text/html; charset=utf-8"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createSchedules(@RequestBody facilityScheduleList: List<FacilitySchedule>): ResponseEntity<String> {
         facilityScheduleService.saveAll(facilityScheduleList)
-        return ResponseEntity.ok("success")
+        return ResponseEntity.ok("success!!!")
     }
 
     @EventMapping
@@ -43,11 +41,7 @@ class ManmaruController(private val facilityService: FacilityService, private va
         println("event: $event")
         val text = event.getMessage().getText()
         val regex = Regex("([1-9]|1[0-2])月")
-        val filter = text.let {
-            if(regex.containsMatchIn(text)){
-                text
-            }
-        }
+
         val facilityList = facilityService.findAll()
         val facilityScheduleList = facilityScheduleService.findAll()
         val facilityScheduleComparator: Comparator<FacilitySchedule> =

@@ -7,6 +7,9 @@ RUN /bin/sh -c gradle clean build
 FROM openjdk:8-jre-alpine
 # フォルダを作って jar をコピー
 RUN mkdir -p /work
+RUN apk --no-cache add tzdata && \
+    cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+    apk del tzdata
 COPY --from=gradlebuild /work/build/libs /work
 
 WORKDIR /work
