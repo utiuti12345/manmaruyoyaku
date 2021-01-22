@@ -29,7 +29,7 @@ class ManmaruController(private val facilityService: FacilityService, private va
         return facilityScheduleService.findAll()
     }
 
-    @PostMapping("schedules",produces = ["text/html; charset=utf-8"])
+    @PostMapping("schedules")
     @ResponseStatus(HttpStatus.CREATED)
     fun createSchedules(@RequestBody facilityScheduleList: List<FacilitySchedule>): ResponseEntity<String> {
         facilityScheduleService.saveAll(facilityScheduleList)

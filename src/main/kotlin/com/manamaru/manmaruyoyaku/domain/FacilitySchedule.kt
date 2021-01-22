@@ -39,7 +39,7 @@ class FacilitySchedule{
     }
 
     fun getDayOfWeek(): String{
-        calendar.time = Date()
+        calendar.time = scheduleDate
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         return weekName[dayOfWeek]
     }
