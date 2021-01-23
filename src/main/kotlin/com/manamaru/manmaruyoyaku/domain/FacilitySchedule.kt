@@ -10,27 +10,31 @@ class FacilitySchedule{
     val scheduleEndTime: String
     val scheduleIsAvailable:Boolean
     val calendar: Calendar = Calendar.getInstance()
+    val emoji:String = "\uDBC0\uDC84"
 
     var weekName = arrayOf("日", "月", "火",
             "水", "木", "金", "土")
 
     constructor(facilityId: Int, scheduleDate: Date, scheduleStartTime: String, scheduleEndTime: String, scheduleIsAvailable: Boolean){
         this.facilityId = facilityId
-        this.scheduleDate = scheduleDate
+        // 9時間ズレる問題が環境で解決できなかったので、9時間ズラす
+        calendar.time = scheduleDate
+        calendar.add(Calendar.HOUR_OF_DAY,9)
+        this.scheduleDate = calendar.getTime()
         this.scheduleStartTime = scheduleStartTime
         this.scheduleEndTime = scheduleEndTime
         this.scheduleIsAvailable = scheduleIsAvailable
     }
 
-    fun formatDatetimeText(): String {
-        // 9時間ズレる問題が環境で解決できなかったので、9時間ズラす
-        calendar.time = scheduleDate
-        calendar.add(Calendar.HOUR_OF_DAY,9)
+    fun formatDatetimeText(isHoliday:Boolean): String {
         val df = SimpleDateFormat("yyyy/MM/dd")
         val formatDate = df.format(calendar.getTime())
         val dayOfWeek = getDayOfWeek()
-        return "${formatDate}(${dayOfWeek})${scheduleStartTime}〜${scheduleEndTime}"
+        val holidayEmoji = if(isHoliday) emoji else ""
+        return "${formatDate}(${dayOfWeek})${scheduleStartTime}〜${scheduleEndTime}${holidayEmoji}"
     }
+
+    fun formatDate():String = SimpleDateFormat("yyyy/MM/dd").format(scheduleDate)
 
     fun formatDatetimeSort(): Date{
         calendar.time = scheduleDate

@@ -8,6 +8,8 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler
 import com.manamaru.manmaruyoyaku.domain.Facility
 import com.manamaru.manmaruyoyaku.domain.FacilitySchedule
+import com.manamaru.manmaruyoyaku.service.CalendarService
+import com.manamaru.manmaruyoyaku.service.ExecCrawlerDateService
 import com.manamaru.manmaruyoyaku.service.FacilityScheduleService
 import com.manamaru.manmaruyoyaku.service.FacilityService
 import org.springframework.http.HttpStatus
@@ -17,7 +19,10 @@ import java.util.*
 
 @RestController
 @LineMessageHandler
-class ManmaruController(private val facilityService: FacilityService, private val facilityScheduleService: FacilityScheduleService) {
+class ManmaruController(private val facilityService: FacilityService,
+                        private val facilityScheduleService: FacilityScheduleService,
+                        private val calendarService: CalendarService,
+                        private val execCrawlerDateService: ExecCrawlerDateService) {
 
     @GetMapping("facilities")
     fun getFacilities(): List<Facility> {
@@ -33,6 +38,8 @@ class ManmaruController(private val facilityService: FacilityService, private va
     @ResponseStatus(HttpStatus.CREATED)
     fun createSchedules(@RequestBody facilityScheduleList: List<FacilitySchedule>): ResponseEntity<String> {
         facilityScheduleService.saveAll(facilityScheduleList)
+        val date = Date()
+        execCrawlerDateService.save(1,date)
         return ResponseEntity.ok("success!!!")
     }
 
@@ -52,12 +59,16 @@ class ManmaruController(private val facilityService: FacilityService, private va
             return facilityList.map { it ->
                 val id = it.facilityId
                 val facilitySchedule = facilityScheduleList
-                        .filter { it -> it.facilityId == id &&
+                        .filter {
+                                it.facilityId == id &&
                                 it.scheduleIsAvailable &&
                                 it.getMonthToString() == text
                         }
                         .sortedWith(facilityScheduleComparator)
-                val schedules = facilitySchedule.map { it -> it.formatDatetimeText() }.toList()
+                val schedules = facilitySchedule.map {
+                    val isHoliday = calendarService.findCountByDate(it.formatDate()) == 1
+                    it.formatDatetimeText(isHoliday)
+                }.toList()
                 TextMessage(it.facilityName + "\n" + it.facilityAreaName + "\n" + schedules.joinToString(separator = "\n"))
             }.toList()
         }
@@ -66,9 +77,12 @@ class ManmaruController(private val facilityService: FacilityService, private va
             val id = it.facilityId
 
             val facilitySchedule = facilityScheduleList
-                    .filter { it -> it.facilityId == id && it.scheduleIsAvailable }
+                    .filter { it.facilityId == id && it.scheduleIsAvailable }
                     .sortedWith(facilityScheduleComparator)
-            val schedules = facilitySchedule.map { it -> it.formatDatetimeText() }.toList()
+            val schedules = facilitySchedule.map {
+                val isHoliday = calendarService.findCountByDate(it.formatDate()) == 1
+                it.formatDatetimeText(isHoliday)
+            }.toList()
             TextMessage(it.facilityName + "\n" + it.facilityAreaName + "\n" + schedules.joinToString(separator = "\n"))
         }.toList()
     }

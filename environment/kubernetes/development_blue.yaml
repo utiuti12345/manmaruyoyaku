@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: manmaru-blue
-          image: utiuti12345/manmaruyoyaku:1.0.16
+          image: utiuti12345/manmaruyoyaku:1.0.17
           imagePullPolicy: Always
           ports:
             - name:          http
