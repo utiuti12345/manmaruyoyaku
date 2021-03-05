@@ -8,10 +8,8 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler
 import com.manamaru.manmaruyoyaku.domain.Facility
 import com.manamaru.manmaruyoyaku.domain.FacilitySchedule
-import com.manamaru.manmaruyoyaku.service.CalendarService
-import com.manamaru.manmaruyoyaku.service.ExecCrawlerDateService
-import com.manamaru.manmaruyoyaku.service.FacilityScheduleService
-import com.manamaru.manmaruyoyaku.service.FacilityService
+import com.manamaru.manmaruyoyaku.service.*
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -22,7 +20,8 @@ import java.util.*
 class ManmaruController(private val facilityService: FacilityService,
                         private val facilityScheduleService: FacilityScheduleService,
                         private val calendarService: CalendarService,
-                        private val execCrawlerDateService: ExecCrawlerDateService) {
+                        private val execCrawlerDateService: ExecCrawlerDateService,
+                        private val lineService: LineService) {
 
     @GetMapping("facilities")
     fun getFacilities(): List<Facility> {
@@ -40,6 +39,7 @@ class ManmaruController(private val facilityService: FacilityService,
         facilityScheduleService.saveAll(facilityScheduleList)
         val date = Date()
         execCrawlerDateService.save(1,date)
+        lineService.broadcast(listOf("にっていがこうしんされました"))
         return ResponseEntity.ok("success!!!")
     }
 
