@@ -19,7 +19,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: apply deployment
-        run: ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $USERNAME@$IPADDRESS -p $PORT kubectl apply -f ./environment/kubernetes/development_blue.yaml
+        run: ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $USERNAME@$IPADDRESS -p $PORT cd source/manmaruyoyaku && git pull && kubectl apply -f ./environment/kubernetes/development_blue.yaml
         env:
           USERNAME: ${{ secrets.USERNAME }}
           IPADDRESS: ${{ secrets.IPADDRESS }}
