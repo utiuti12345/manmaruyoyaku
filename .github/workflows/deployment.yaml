@@ -1,0 +1,26 @@
+name: apply to remote
+
+on:
+  push:
+    branches:
+      # 起動タイミングはマスターブランチへのまーじ
+      - release
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # check out
+      - uses: actions/checkout@v1
+
+      - name: ssh key generate
+        run: echo "$SSH_PRIVATE_KEY" > key && chmod 600 key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: apply deployment
+        run: ssh -i key -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $USERNAME@$IPADDRESS -p $PORT cd source/manmaruyoyaku && git pull origin release && git checkout release && kubectl apply -f ./environment/kubernetes/development_blue.yaml
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          IPADDRESS: ${{ secrets.IPADDRESS }}
+          PORT: ${{secrets.PORT}}

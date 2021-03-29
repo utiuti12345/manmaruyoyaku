@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  lego:
+    image: xenolf/lego
+    environment:
+      - CONOHA_REGION=tyo1かtyo2
+      - CONOHA_TENANT_ID=テナントID
+      - CONOHA_API_USERNAME=ユーザー名
+      - CONOHA_API_PASSWORD=パスワード
+    command: >
+      --path /lego
+      --dns conoha
+      --email Eメール
+      --domains "ドメイン"
+      --accept-tos
+      run
+    volumes:
+      - type: bind
+        source: ./lego
+        target: /lego

@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: manmaru-lb
+  namespace: manmaru
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+    - hosts:
+        - ドメイン名
+      secretName: manmaru-tls-certificate
+  rules:
+    - host: ドメイン名
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: manmaru-svc
+              servicePort: 5000

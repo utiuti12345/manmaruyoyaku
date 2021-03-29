@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: manmaru
+  name: manmaruyoyaku
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: manmaruyoyaku
+  template:
+    metadata:
+      labels:
+        app: manmaruyoyaku
+        version: blue
+    spec:
+      containers:
+        - name: manmaru-blue
+          image: utiuti12345/manmaruyoyaku:1.0.21
+          imagePullPolicy: Always
+          ports:
+            - name:          http
+              protocol:      TCP
+              containerPort: 5000
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: url
+            - name: SPRING_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: username
+            - name: SPRING_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: password
