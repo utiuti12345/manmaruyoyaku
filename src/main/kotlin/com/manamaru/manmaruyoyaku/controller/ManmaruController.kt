@@ -39,7 +39,7 @@ class ManmaruController(private val facilityService: FacilityService,
         facilityScheduleService.saveAll(facilityScheduleList)
         val date = Date()
         execCrawlerDateService.save(1,date)
-        lineService.broadcast(listOf("にっていがこうしんされました"))
+        lineService.pushMessage(listOf("U6f407640da1fbd5520106b03dbf28376"),listOf("にっていがこうしんされました"))
         return ResponseEntity.ok("success!!!")
     }
 

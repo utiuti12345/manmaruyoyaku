@@ -31,6 +31,10 @@ class LineService{
 
     fun pushMessage(ids: List<String>, messages: List<String>){
         val lineMessages = messages.map { TextMessage(it) }
-        ids.map { it -> lineMessagingClient?.pushMessage(PushMessage(it, lineMessages)) }
+        ids.map { it -> lineMessagingClient?.pushMessage(PushMessage(it, lineMessages))?.get()
+                .also {
+                    print("message result. $it")
+                }
+        }
     }
 }
