@@ -50,15 +50,10 @@ class FacilitySchedule{
     }
 
     fun getDayOfWeek(): String{
-        // 9時間ズレる問題が環境で解決できなかったので、9時間逆にズラす
         calendar.time = scheduleDate
-        //calendar.add(Calendar.HOUR_OF_DAY, -9)
-
         val localDate: LocalDate = calendar.time.toInstant().atZone(ZoneId.of("Asia/Tokyo")).toLocalDate()
         val week: DayOfWeek = localDate.getDayOfWeek()
         println("${calendar.time}")
-//        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
-//        println("${calendar.time} ${dayOfWeek}")
         return week.getDisplayName(TextStyle.SHORT, Locale.JAPANESE)
     }
 
