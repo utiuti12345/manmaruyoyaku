@@ -7,6 +7,7 @@ build/
 
 /environment/mysql/init.sql
 /environment/certificate/docker-compose_prod.yaml
+/environment/certificate/create-tls-secret-prod.sh
 /environment/kubernetes/create_password.sh
 /environment/kubernetes/secret.yaml
 /environment/kubernetes/ingress_prod.yaml
